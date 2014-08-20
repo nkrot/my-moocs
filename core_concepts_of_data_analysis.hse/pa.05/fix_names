@@ -1,0 +1,16 @@
+#!/usr/bin/awk -f
+
+BEGIN {
+	names["I.setosa"] = 1
+	names["I.versicolor"] = 2
+	names["I.virginica"] = 3
+}
+
+!($NF in names) {
+	names[$NF] = a++
+}
+
+{
+	$NF = names[$NF]
+	print
+}

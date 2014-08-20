@@ -1,0 +1,15 @@
+#!/usr/bin/awk -f
+
+BEGIN {
+	names["shilo"] = 42
+	delete names
+}
+
+!($NF in names) {
+	names[$NF] = a++
+}
+
+{
+	$NF = names[$NF]
+	print
+}
