@@ -1,0 +1,25 @@
+Find all pizzerias that serve every pizza eaten by people over 30.
+ 
+# ok
+# The algo is Relational substraction
+\project_{pizzeria} Serves
+\diff
+\project_{pizzeria} (
+  (
+    \project_{pizzeria} Serves
+    \cross
+    \project_{pizza} (Eats \join (\select_{age>30} Person))
+  )
+  \diff
+  \project_{pizzeria,pizza} Serves
+)
+
+# also works ok
+# TODO: will it work if the number of pizzas eaten by people over 30 is 2+ ?
+
+\project_{pizzeria1} (
+	\select_{pizzeria1=pizzeria2 and pizza1<>pizza2} (
+		\rename_{pizza1,pizzeria1,pizza2,pizzeria2} (
+			\project_{pizza,pizzeria} \select_{age>30} (Person \join Eats \join Serves)
+			\cross
+			\project_{pizza,pizzeria} \select_{age>30} (Person \join Eats \join Serves))))

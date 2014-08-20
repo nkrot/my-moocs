@@ -1,0 +1,39 @@
+Find all pizzerias that serve only pizzas eaten by people over 30. 
+
+# ok
+# Algorithm
+# 1. find pizzas that are only eaten by young people (and never eaten by 30+ people)
+# 2. find pizzarias that serve such pizzas
+# 3. substract such pizzerias from all pizzerias
+
+\project_{pizzeria} Serves
+\diff
+\project_{pizzeria}
+ (Serves
+  \join_{pizza=youngpizza}
+  \rename_{youngpizza}
+   (\project_{pizza} Eats
+    \diff
+    \project_{pizza} (Eats \join (\select_{age>30} Person))))
+
+### crap
+\project_{pizzeria} (
+  (Person \join Frequents)
+  \intersect
+  \project_{pizza} (
+    \project_{pizza} (\select_{age>30} (Person \join Eats \join Serves))
+    \diff
+    \project_{pizza} (\select_{age<=30} (Person \join Eats \join Serves)
+
+
+(
+ \project_{pizza,pizzeria} (
+							\select_{age>30} (Person \join Eats \join Serves))
+ \diff ((
+		 \project_{pizza} \select_{age>30} (Person \join Eats)
+		 \cross 
+		 \project_{pizzeria} Serves))
+ \diff
+ \project_{pizza,pizzeria} (\select_{age>30} (Person \join Eats \join Serves))
+
+

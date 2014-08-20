@@ -1,0 +1,68 @@
+# uses ../countries.xml
+
+q1. Return the names of all countries with population greater than 100 million
+
+# ok++
+doc("countries.xml")//country[number(@population) > 100000000]/data(@name)
+
+q2. Return the names of all countries where a city in that country contains more than one-third of the country's population. 
+
+# incorrect. city/population is a set of all cities
+#doc("countries.xml")//country[
+# number(city/population) * 3 > number(@population)
+#]/data(@name)
+
+# ok++
+for $country in doc("countries.xml")//country
+for $citypop in $country/city/population
+where xs:int($citypop)*3 > xs:int($country/data(@population))
+return $country/data(@name)
+
+q3. Return the population density of Qatar. Note: Since the "/" operator has its own meaning in XPath and XQuery, the division operator is "div". To compute population density use "(@population div @area)". 
+
+
+# ok ++
+for $q in doc("countries.xml")//country[@name="Qatar"]
+return ($q/@population div $q/data(@area))
+
+# this one is also corrent but produces a different numeric output, hence not accepted
+# output 49.796454545454545455 vs. expected 49.796454545454544
+for $q in doc("countries.xml")//country[@name="Qatar"]
+return (xs:int($q/data(@population)) div xs:int($q/data(@area)))
+# however, if number() is used instead of xs:int(), then everything is ok
+for $q in doc("countries.xml")//country[@name="Qatar"]
+return (number($q/data(@population)) div number($q/data(@area)))
+
+# and no way of doing it using ouper XPath
+# bad, empty result
+doc("countries.xml")//country[name="Qatar"]/(data(@population) div data(@area))
+
+
+q4. Return the names of all countries whose population is less than one thousandth that of some city (in any country). 
+
+# ok ++
+distinct-values(
+for $country in doc("countries.xml")//country,
+    $city in doc("countries.xml")//country/city/population
+where $country/data(@population) < $city div 1000
+return $country/data(@name))
+
+
+q5. Return all city names that appear more than once, i.e., there is more than one city with that name in the data. Return only one instance of each such city name. (Hint: You might want to use the "preceding" and/or "following" navigation axes for this query, which were not covered in the video or our demo script; they match any preceding or following node, not just siblings.) 
+
+# ok++
+doc("countries.xml")//country/city/name[
+	text() = preceding::*/city/name/text()
+]
+
+&&&
+q6. Return the names of all countries whose name textually contains a language spoken in that country. For instance, Uzbek is spoken in Uzbekistan, so return Uzbekistan. (Hint: You may want to use ".", which refers to the "current element" within an XPath expression.) 
+
+# sucks
+doc("countries.xml")//country[
+	contains(@name, ./language/text())
+]/name
+
+doc("countries.xml")//country/language[
+	contains(text(), ../data(@name)
+]/..

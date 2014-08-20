@@ -1,0 +1,51 @@
+!!! semicolons ; are important
+!!! valid for SQLite
+
+q1. Write a trigger that makes new students named 'Friendly' automatically like everyone else in their grade. That is, after the trigger runs, we should have ('Friendly', A) in the Likes table for every other Highschooler A in the same grade as 'Friendl
+
+# ok +++
+Create trigger Friendly
+After insert on Highschooler
+For each row
+when New.name = "Friendly"
+begin
+  insert into Likes
+  select New.ID, H.ID from Highschooler H
+  where New.grade = H.grade and New.name <> H.name;
+end;
+
+q2. Write one or more triggers to manage the grade attribute of new Highschoolers. If the inserted tuple has a value less than 9 or greater than 12, change the value to NULL. On the other hand, if the inserted tuple has a null value for grade, change it to 9.
+
+# ok +++
+create trigger GradeOutOfRange
+after insert on Highschooler
+For each row
+when New.grade < 9 or New.grade > 12
+begin
+  update Highschooler
+  set grade = NULL
+  where grade <9 or grade > 12;
+end
+|
+Create trigger FixNullGrade
+after insert on Highschooler
+for each row
+when New.grade is NULL
+begin
+  update Highschooler
+  set grade = 9
+  where grade is NULL;
+end
+
+q3. Write a trigger that automatically deletes students when they graduate, i.e., when their grade is updated to exceed 12.
+
+# ok +++
+Create trigger DeleteGraduated
+after update of grade on Highschooler
+for each row
+when New.grade > 12
+begin
+  delete from Highschooler
+  where grade > 12;
+end; 
+

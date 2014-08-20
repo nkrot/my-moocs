@@ -1,0 +1,17 @@
+Find the age of the oldest person (or people) who eat mushroom pizza.
+
+# ok.
+# TODO: can it be written in a shorter fashion?
+\project_{age1} (
+\select_{age1>age2} (
+	\rename_{age1,age2} (
+		\project_{age} (\select_{pizza='mushroom'} (Person \join Eats))
+		\cross
+		\project_{age} (\select_{pizza='mushroom'} (Person \join Eats)))))
+\diff
+\project_{age2} (
+\select_{age1>age2} (
+	\rename_{age1,age2} (
+		\project_{age} (\select_{pizza='mushroom'} (Person \join Eats))
+		\cross
+		\project_{age} (\select_{pizza='mushroom'} (Person \join Eats)))))

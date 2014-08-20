@@ -1,0 +1,235 @@
+<?xml version="1.0"?>
+<languages>
+  <language name="Afghan Persian">
+    <country name="Afghanistan" speakers="1.1332068E7"/>
+  </language>
+  <language name="Afrikaans">
+    <country name="Namibia" speakers="1.0063457999999999E6"/>
+  </language>
+  <language name="Albanian">
+    <country name="Macedonia" speakers="441847.35"/>
+    <country name="Serbia and Montenegro" speakers="530727.9"/>
+  </language>
+  <language name="Arabic">
+    <country name="Iran" speakers="660942.64"/>
+    <country name="Saudi Arabia" speakers="1.9409058E7"/>
+    <country name="Yemen" speakers="1.3483178E7"/>
+  </language>
+  <language name="Armenian">
+    <country name="Armenia" speakers="3.32503104E6"/>
+    <country name="Azerbaijan" speakers="153539.06"/>
+    <country name="Georgia" speakers="365386.7"/>
+  </language>
+  <language name="Azeri">
+    <country name="Azerbaijan" speakers="6.83248817E6"/>
+    <country name="Georgia" speakers="313188.6"/>
+  </language>
+  <language name="Baloch">
+    <country name="Iran" speakers="660942.64"/>
+  </language>
+  <language name="Balochi">
+    <country name="Pakistan" speakers="3.87826992E6"/>
+  </language>
+  <language name="Bambara">
+    <country name="Mali" speakers="7.722608800000001E6"/>
+  </language>
+  <language name="Basque">
+    <country name="Spain" speakers="783622.24"/>
+  </language>
+  <language name="Brahui">
+    <country name="Pakistan" speakers="1.2927566400000001E6"/>
+  </language>
+  <language name="Bulgarian">
+    <country name="Bulgaria" speakers="8.612757E6"/>
+  </language>
+  <language name="Burmese">
+    <country name="Burma" speakers="4.5975624E7"/>
+  </language>
+  <language name="Catalan">
+    <country name="Spain" speakers="6.66078904E6"/>
+  </language>
+  <language name="Dutch">
+    <country name="Belgium" speakers="5.695334960000001E6"/>
+    <country name="Netherlands" speakers="1.5568034E7"/>
+  </language>
+  <language name="English">
+    <country name="Anguilla" speakers="10424"/>
+    <country name="Antigua and Barbuda" speakers="65647"/>
+    <country name="Australia" speakers="1.8260864E7"/>
+    <country name="Barbados" speakers="257030"/>
+    <country name="Bermuda" speakers="62099"/>
+    <country name="British Virgin Islands" speakers="13195"/>
+    <country name="Cayman Islands" speakers="34646"/>
+    <country name="Christmas Island" speakers="813"/>
+    <country name="Cocos Islands" speakers="609"/>
+    <country name="Falkland Islands" speakers="2374"/>
+    <country name="Liberia" speakers="421957.80000000005"/>
+    <country name="Montserrat" speakers="12771"/>
+    <country name="Namibia" speakers="117407.01000000001"/>
+    <country name="Panama" speakers="371713.16000000003"/>
+    <country name="Papua New Guinea" speakers="43945.37"/>
+    <country name="Saint Helena" speakers="6782"/>
+    <country name="Saint Kitts and Nevis" speakers="41369"/>
+    <country name="Solomon Islands" speakers="4129.02"/>
+    <country name="Turks and Caicos Islands" speakers="14302"/>
+  </language>
+  <language name="Finnish">
+    <country name="Finland" speakers="4.77339005E6"/>
+  </language>
+  <language name="French">
+    <country name="Belgium" speakers="3.25447712E6"/>
+    <country name="France" speakers="5.8317448E7"/>
+    <country name="French Guiana" speakers="151187"/>
+    <country name="Guadeloupe" speakers="403690.32"/>
+    <country name="Guinea" speakers="7.411981E6"/>
+    <country name="Haiti" speakers="673153.9"/>
+    <country name="Saint Pierre and Miquelon" speakers="6809"/>
+    <country name="Switzerland" speakers="1.2972708E6"/>
+  </language>
+  <language name="Galician">
+    <country name="Spain" speakers="2.7426778400000003E6"/>
+  </language>
+  <language name="Georgian">
+    <country name="Georgia" speakers="3.7060650999999996E6"/>
+  </language>
+  <language name="German">
+    <country name="Austria" speakers="8.023244E6"/>
+    <country name="Belgium" speakers="101702.41"/>
+    <country name="Germany" speakers="8.3536112E7"/>
+    <country name="Namibia" speakers="536717.76"/>
+    <country name="Switzerland" speakers="4.684589E6"/>
+  </language>
+  <language name="Hindi">
+    <country name="India" speakers="2.8563231359999996E8"/>
+  </language>
+  <language name="Hindko">
+    <country name="Pakistan" speakers="2.5855132800000003E6"/>
+  </language>
+  <language name="Hungarian">
+    <country name="Hungary" speakers="9.822495262E6"/>
+  </language>
+  <language name="Icelandic">
+    <country name="Iceland" speakers="270292"/>
+  </language>
+  <language name="Indian">
+    <country name="Guatemala" speakers="4.511045600000001E6"/>
+  </language>
+  <language name="Italian">
+    <country name="San Marino" speakers="24521"/>
+    <country name="Switzerland" speakers="864847.2"/>
+  </language>
+  <language name="Japanese">
+    <country name="Japan" speakers="1.25449704E8"/>
+  </language>
+  <language name="Kazak">
+    <country name="Kazakstan" speakers="6.766585600000001E6"/>
+  </language>
+  <language name="Khalkha Mongol">
+    <country name="Mongolia" speakers="2.2469553000000003E6"/>
+  </language>
+  <language name="Korean">
+    <country name="North Korea" speakers="2.3904124E7"/>
+  </language>
+  <language name="Kurdish">
+    <country name="Iran" speakers="5.94848376E6"/>
+  </language>
+  <language name="Luri">
+    <country name="Iran" speakers="1.32188528E6"/>
+  </language>
+  <language name="Macedonian">
+    <country name="Macedonia" speakers="1.4728245E6"/>
+  </language>
+  <language name="Nepali">
+    <country name="Nepal" speakers="2.2094032E7"/>
+  </language>
+  <language name="Norwegian">
+    <country name="Norway" speakers="4.383807E6"/>
+  </language>
+  <language name="Pashtu">
+    <country name="Afghanistan" speakers="7.9324476E6"/>
+    <country name="Pakistan" speakers="1.0342053120000001E7"/>
+  </language>
+  <language name="Persian Persian">
+    <country name="Iran" speakers="3.833467312E7"/>
+  </language>
+  <language name="Polish">
+    <country name="Poland" speakers="3.8642564E7"/>
+  </language>
+  <language name="Portuguese">
+    <country name="Macau" speakers="19873.48"/>
+    <country name="Mozambique" speakers="1.7877928E7"/>
+    <country name="Portugal" speakers="9.865114E6"/>
+    <country name="Sao Tome and Principe" speakers="144128"/>
+  </language>
+  <language name="Punjabi">
+    <country name="Pakistan" speakers="6.205231872E7"/>
+  </language>
+  <language name="Romansch">
+    <country name="Switzerland" speakers="72070.6"/>
+  </language>
+  <language name="Russian">
+    <country name="Armenia" speakers="69271.48"/>
+    <country name="Azerbaijan" speakers="230308.59"/>
+    <country name="Georgia" speakers="469782.89999999997"/>
+    <country name="Russia" speakers="1.4817848E8"/>
+    <country name="Turkmenistan" speakers="497913.95999999996"/>
+    <country name="Uzbekistan" speakers="3.3254099599999995E6"/>
+  </language>
+  <language name="Serbo-Croatian">
+    <country name="Bosnia and Herzegovina" speakers="2.6296776E6"/>
+    <country name="Croatia" speakers="4.80394752E6"/>
+    <country name="Macedonia" speakers="63121.049999999996"/>
+    <country name="Serbia and Montenegro" speakers="1.00838301E7"/>
+    <country name="Slovenia" speakers="136601.01"/>
+  </language>
+  <language name="Sindhi">
+    <country name="Pakistan" speakers="1.551307968E7"/>
+  </language>
+  <language name="Sinhala">
+    <country name="Sri Lanka" speakers="1.372927476E7"/>
+  </language>
+  <language name="Siraiki">
+    <country name="Pakistan" speakers="1.29275664E7"/>
+  </language>
+  <language name="Slovenian">
+    <country name="Slovenia" speakers="1.7758131300000001E6"/>
+  </language>
+  <language name="Spanish">
+    <country name="Chile" speakers="1.4333258E7"/>
+    <country name="Colombia" speakers="3.681316E7"/>
+    <country name="Cuba" speakers="1.0951334E7"/>
+    <country name="Dominican Republic" speakers="8.088881E6"/>
+    <country name="Guatemala" speakers="6.766568399999999E6"/>
+    <country name="Nicaragua" speakers="4.272352E6"/>
+  </language>
+  <language name="Swedish">
+    <country name="Finland" speakers="321629.49"/>
+    <country name="Sweden" speakers="8.900954E6"/>
+  </language>
+  <language name="Tajik">
+    <country name="Uzbekistan" speakers="1.0304087200000001E6"/>
+  </language>
+  <language name="Tamil">
+    <country name="Sri Lanka" speakers="3.33955332E6"/>
+  </language>
+  <language name="Turkic">
+    <country name="Afghanistan" speakers="2.49305496E6"/>
+  </language>
+  <language name="Turkic Turkic">
+    <country name="Iran" speakers="1.718450864E7"/>
+  </language>
+  <language name="Turkish">
+    <country name="Iran" speakers="660942.64"/>
+    <country name="Macedonia" speakers="63121.049999999996"/>
+  </language>
+  <language name="Turkmen">
+    <country name="Turkmenistan" speakers="2.98748376E6"/>
+  </language>
+  <language name="Urdu">
+    <country name="Pakistan" speakers="1.0342053120000001E7"/>
+  </language>
+  <language name="Uzbek">
+    <country name="Turkmenistan" speakers="373435.47"/>
+    <country name="Uzbekistan" speakers="1.739985634E7"/>
+  </language>
+</languages>

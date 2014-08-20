@@ -1,0 +1,60 @@
+
+q1. Find all students who do not appear in the Likes table (as a student who likes or is liked) and return their names and grades. Sort by grade, then by name within each grade. 
+
+# ok++
+select name, grade from Highschooler
+where ID not in (
+	  select ID1 from Likes
+	  union
+	  select ID2 from Likes)
+order by grade, name
+
+
+q2. For each student A who likes a student B where the two are not friends, find if they have a friend C in common (who can introduce them!). For all such trios, return the name and grade of A, B, and C. 
+
+#==> see another file
+
+q3. Find the difference between the number of students in the school and the number of different first names. 
+
+# ok ++
+select NumStudents-NumNames
+from ((select count(*) as NumStudents from Highschooler),
+      (select count(*) as NumNames from (select distinct name from Highschooler)))
+
+# ok ++ (from another file)
+select StudentCount-NameCount
+from (select count(distinct name) as NameCount from Highschooler),
+     (select count(name) as StudentCount from Highschooler)
+
+q4. What is the average number of friends per student? (Your result should be just one number.) 
+#=> see in another file
+
+# ok ++
+select 1.0*Total/uniq
+from
+  (select count(distinct id1) as Uniq from friend),
+  (select count(*) as Total from Friend)
+
+
+q5. Find the number of students who are either friends with Cassandra or are friends of friends of Cassandra. Do not count Cassandra, even though technically she is a friend of a friend. 
+
+# ok ++
+# NOTE another solution
+select count(*) from
+(select id1 from Friend F1
+where id1 <> (select id from Highschooler where name = 'Cassandra')
+   and id2 in   (select id2 from Friend
+                      where id1 = (select id from Highschooler where name = 'Cassandra'))
+union
+select id2 from Friend
+                      where id1 = (select id from Highschooler where name = 'Cassandra'))
+
+# (in another file)
+# NOTE: this is incorrect, though the result happens to be the same
+select count(*) from Friend F1
+where id2 in
+  (select id2 from Friend F2
+  where id1 = (select id from Highschooler where name = 'Cassandra'))
+
+q7. Find the name and grade of the student(s) with the greatest number of friends. 
+#=> in another file

@@ -1,0 +1,92 @@
+https://class.coursera.org/db/quiz/attempt?quiz_id=135
+
+1. For every situation where student A likes student B, but student B likes a different student C, return the names and grades of A, B, and C. 
+
+# ok
+select H1.name, H1.grade, H2.name, H2.grade, H3.name, H3.grade
+from
+(select L1.id1 as A, L1.id2 as B, L2.id2 as C
+from Likes L1, Likes L2
+where L1.id1 <> L2.id2
+   and L1.id2 = L2.id1
+   and L1.id2 not in (select id1 from Likes where id2 = L1.id1)) Triangle,
+Highschooler H1, Highschooler H2, Highschooler H3
+where Triangle.A = H1.id
+    and Triangle.B = H2.id
+    and Triangle.C = H3.id
+
+
+2. Find those students for whom all of their friends are in different grades from themselves. Return the students' names and grades. 
+
+# ok
+select WrongMate.name, WrongMate.grade
+from (
+ select H1.id, H1.name, H1.grade
+  from Highschooler H1, Highschooler H2, Friend F
+  where H1.id = F.id1 and H2.id = F.id2
+  except
+  select H1.id, H1.name, H1.grade
+  from Highschooler H1, Highschooler H2, Friend F
+    where H1.id = F.id1 and H2.id = F.id2 and H1.grade = H2.grade)  WrongMate
+
+
+3. What is the average number of friends per student? (Your result should be just one number.) 
+# expected 2.5
+
+# ok
+# synonym: select cast(Total as float)/Uniq
+select 1.0*Total/uniq
+from
+  (select count(*) as Uniq
+     from (select distinct id1 from Friend)),
+  (select count(*) as Total
+     from (select id1 from Friend))
+
+4. Find the number of students who are either friends with Cassandra or are friends of friends of Cassandra. Do not count Cassandra, even though technically she is a friend of a friend. 
+
+expected 7
+
+# ok
+select count(*) from Friend F1
+where id2 in
+  (select id2 from Friend F2
+  where id1 = (select id from Highschooler where name = 'Cassandra'))
+
+
+# 
+/* friends of cassandra*/
+# it finds recors in both sides, thus, duplicate amount
+select count(*) from Friend
+where (select id from Highschooler
+           where name = 'Cassandra') in (id1, id2)
+
+# simplified, unidirected Friends connection is kept 
+select * from Friend
+where id1 = (select id from Highschooler where name = 'Cassandra')
+
+5. Find the name and grade of the student(s) with the greatest number of friends. 
+
+expected
+Alexis 	11
+Andrew 	10
+
+# ok
+select name, grade
+from Highschooler
+where id in 
+  (select id1 from Friend
+   group by id1
+   having count(id2) = 
+     (select max(cnt)
+      from
+         (select id1, count(id2) as cnt
+          from Friend group by id1)))
+
+### MY
+# Q: Are all records in Friend are in both sides?
+# A: yes. the query return nothing  
+select * from Friend F1
+where not exists
+   (select * from Friend F2
+    where F1.id1 = F2.id2 and F1.id2 = F2.id1)
+

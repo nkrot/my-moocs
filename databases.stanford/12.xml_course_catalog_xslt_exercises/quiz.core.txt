@@ -1,0 +1,43 @@
+
+q1. Return a list of department titles. 
+
+# ok++
+ <?xml version="1.0" encoding="ISO-8859-1"?>
+ <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+   <xsl:template match="Department/Title">
+	 <xsl:copy-of select="."/>
+   </xsl:template>
+   <xsl:template match="text()" />
+ </xsl:stylesheet>
+
+q2. Return a list of department elements with no attributes and two subelements each: the department title and the entire Chair subelement structure. 
+
+# ok ++
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <xsl:template match="@*|text()"/>
+
+  <xsl:template match="/">
+      <xsl:for-each select="//Department">
+         <Department>
+	  <xsl:copy-of select="Title"/>
+	  <xsl:copy-of select="Chair"/>
+        </Department>
+      </xsl:for-each>
+  </xsl:template>
+
+</xsl:stylesheet>
+
+# ok ++
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <xsl:template match="@*|text()"/>
+
+  <xsl:template match="Department">
+	<Department>
+	  <xsl:copy-of select="Title"/>
+	  <xsl:copy-of select="Chair"/>
+	</Department>
+  </xsl:template>
+
+</xsl:stylesheet>

@@ -1,0 +1,89 @@
+https://class.coursera.org/db/quiz/attempt?quiz_id=126
+
+1. It's time for the seniors to graduate. Remove all 12th graders from Highschooler.
+
+# ok
+delete from Highschooler
+where grade = 12
+
+2. If two students A and B are friends, and A likes B but not vice-versa, remove the Likes tuple.
+
+# ok
+# yeees, i did it!
+# TODO: alternatively, can use rowid (see sqlite doc)
+delete from Likes
+where (id1 || '-' || id2) in
+  (select id1 || '-' || id2
+     from (select *
+             from Likes L
+            where exists
+                 (select * from Friend F
+                   where F.id1 = L.id1 and F.id2 = L.id2)
+   except
+   select id2, id1 from Likes))
+
+# other, less successful, attempts
+
+# TODO: how to delete such rows?
+select * from Likes L1
+where not exists 
+(select * from Likes L2
+where L1.id1 = L2.id2 and L1.id2 = L2.id1)
+intersect
+select * from Friend
+
+# alternatively
+# TODO: how to delete such rows?
+select *
+from Likes L1
+where id1 in (select id1 from Friend F where L1.id2 = F.id2) /* are friends */
+  and not exists (select * from Likes L2 where L2.id2 = L1.id1) /* are not liked */
+
+# ok
+# This assumes that Likes.id1 is unique in the id1 column, which is not obligatorily true in the general case.
+delete from Likes
+where id1 in (
+select id1
+from Likes L1
+where id1 in (select id1 from Friend F where L1.id2 = F.id2) /* are friends */
+  and not exists (select * from Likes L2 where L2.id2 = L1.id1) /* are not liked */
+)
+
+3. For all cases where A is friends with B, and B is friends with C, add a new friendship for the pair A and C. Do not add duplicate friendships, friendships that already exist, or friendships with oneself. (This one is a bit challenging; congratulations if you get it right.)
+
+# ok
+# inserts both A-C and C-A
+insert into Friend
+select * from
+(select F1.id1, F2.id2
+from Friend F1, Friend F2
+where F1.id2 = F2.id1 and F1.id1 < F2.id2
+  and not exists
+    (select * from Friend F3 where F1.id1 = F3.id1 and F2.id2 = F3.id2)
+union
+select F2.id2, F1.id1
+from Friend F1, Friend F2
+where F1.id2 = F2.id1 and F1.id1 < F2.id2
+  and not exists
+    (select * from Friend F3 where F1.id1 = F3.id1 and F2.id2 = F3.id2))
+
+# ok
+insert into Friend
+  select F1.id1, F2.id2
+    from Friend F1 join Friend F2
+     on F1.id2 = F2.id1 and F1.id1 <> F2.id2
+  except
+  select * from Friend
+
+# bad, not enough, as it adds A-C only
+insert into Friend
+select F1.id1, F2.id2
+from Friend F1, Friend F2
+where F1.id2 = F2.id1 and F1.id1 < F2.id2
+  and not exists
+    (select * from Friend F3 where F1.id1 = F3.id1 and F2.id2 = F3.id2)
+
+# query that extract res.gold
+select ID, name, grade,
+   (select count(*) from Friend where id1 = H.id)
+from Highschooler H order by ID

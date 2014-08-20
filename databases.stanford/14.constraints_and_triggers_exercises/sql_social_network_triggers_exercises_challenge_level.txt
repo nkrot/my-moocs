@@ -1,0 +1,58 @@
+q1. Write one or more triggers to maintain symmetry in friend relationships. Specifically, if (A,B) is deleted from Friend, then (B,A) should be deleted too. If (A,B) is inserted into Friend then (B,A) should be inserted too. Don't worry about updates to the Friend table.
+
+# ok +++
+create trigger AddMutualFriend
+after insert on Friend
+for each row
+ when not exists (select * from Friend where id1 = New.id2 and id2 = New.id1)
+begin
+  insert into Friend values(New.id2, New.id1);
+end
+|
+create trigger DeleteMutualFriend
+after delete on Friend
+for each row
+begin
+  delete from Friend where id1 = Old.id2 and id2 = Old.id1;
+end
+
+q2. Write a trigger that automatically deletes students when they graduate, i.e., when their grade is updated to exceed 12. In addition, write a trigger so when a student is moved ahead one grade, then so are all of his or her friends.
+
+# ok +++
+create trigger DeleteOnGraduation1
+after insert on Highschooler
+when New.grade > 12
+begin
+  delete from Highschooler where ID = New.id;
+end
+|
+create trigger DeleteOnGraduation2
+after update on Highschooler
+when New.grade > 12
+begin
+  delete from Highschooler where ID = New.id;
+end
+|
+create trigger PromoteClassmates
+after update of grade on Highschooler
+when New.grade > Old.grade
+begin
+  update Highschooler
+  set grade = grade+1
+  where ID in (select ID2 from Friend where ID1 = New.ID);
+end
+
+q3. Write a trigger to enforce the following behavior: If A liked B but is updated to A liking C instead, and B and C were friends, make B and C no longer friends. Don't forget to delete the friendship in both directions, and make sure the trigger only runs when the "liked" (ID2) person is changed but the "liking" (ID1) person is not changed.
+
+# not handled case: ID1 has changed as well
+# Changed 'John-12 liking Haley-10' to 'Logan-12 liking Brittany-10
+
+create trigger FatalJelousy
+after update of ID2 on Likes
+when Old.ID1 = New.ID1
+begin
+  delete from Friend F
+  where F.ID1 = Old.ID2 and F.ID2 = New.ID2
+     or F.ID2 = Old.ID2 and F.ID1 = New.ID2;
+end
+

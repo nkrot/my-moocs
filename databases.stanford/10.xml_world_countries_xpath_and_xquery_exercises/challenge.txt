@@ -1,0 +1,163 @@
+#
+# TODO: q4 and q10
+# manual: http://www.datypic.com/books/xquery/chapter07.html
+#
+
+q1. Return the names of all countries that have at least three cities with population greater than 3 million. 
+
+# ok++
+doc("countries.xml")//country[
+ # this counts cities
+ count(./city[./population > 3000000])>2
+# this counts something else
+# count(./city/population > 3000000])>2
+]/data(@name)
+
+q2. Create a list of French-speaking and German-speaking countries. The result should take the form:
+
+# ok++
+<result>
+<French>
+{for $country in doc("countries.xml")//country[language="French"]/data(@name)
+return <country> {$country} </country>  }
+</French>
+<German>
+{for $country in doc("countries.xml")//country[language="German"]/data(@name)
+return <country> {$country} </country>  }
+</German>
+</result>
+
+q3. Return the countries with the highest and lowest population densities. Note that because the "/" operator has its own meaning in XPath and XQuery, the division operator is infix "div". To compute population density use "(@population div @area)". You can assume density values are unique. The result should take the form:
+<result>
+  <highest density="value">country-name</highest>
+  <lowest density="value">country-name</lowest>
+</result>
+
+# ok++
+<result>
+{
+let $maxdens := max(doc("countries.xml")//country/(@population div @area))
+for $c in doc("countries.xml")//country[(@population div @area) = $maxdens]
+return <highest density="{$maxdens}">{$c/data(@name)}</highest>,
+let $mindens := min(doc("countries.xml")//country/(@population div @area))
+for $c in doc("countries.xml")//country[(@population div @area) = $mindens]
+return <lowest density="{$mindens}">{$c/data(@name)}</lowest>
+}
+</result>
+
+q4. Return the names of all countries containing a city such that some other country has a city of the same name. (Hint: You might want to use the "preceding" and/or "following" navigation axes for this query, which were not covered in the video or our demo script; they match any preceding or following node, not just siblings.) 
+
+# ok++
+# TODO:once submitted, was graded as WRONG
+doc("countries.xml")//country[./city/name = */following::*/city/name]/data(@name)
+
+q5. Return the average number of languages spoken in countries where Russian is spoken. 
+
+# ok++
+avg(doc("countries.xml")//country[language="Russian"]/count(language))
+
+q6. Return all country-language pairs where the language is spoken in the country and the name of the country textually contains the language name. Return each pair as a country element with language attribute, e.g.,
+
+<country language="French">French Guiana</country>
+
+# ok
+for $c in doc("countries.xml")//country
+for $lang in $c/language[contains(parent::*/data(@name), .)]
+return <country language="{$lang}">{$c/data(@name)}</country>
+
+
+q7. Return all countries that have at least one city with population greater than 7 million. For each one, return the country name along with the cities greater than 7 million, in the format:
+
+<country name="country-name">
+  <big>city-name</big>
+  <big>city-name</big>
+  ...
+</country>
+
+# ok ++; NOTE the terrible order of {}
+for $country in doc("countries.xml")//country[city/population > 7000000]
+return <country name="{ $country/data(@name) }">
+{for $city in $country/city[population > 7000000]/name
+return <big>{$city/text()}</big> }
+</country>
+
+q8. Return all countries where at least one language is listed, but the total percentage for all listed languages is less than 90%. Return the country element with its name attribute and its language subelements, but no other attributes or subelements. 
+
+# ok++
+for $country in doc("countries.xml")//country[
+  count(language) > 0 
+  and sum(language/data(@percentage)) < 90]
+return
+  <country name="{$country/data(@name)}">
+    {$country/language}
+  </country>
+
+
+q9. Return all countries where at least one language is listed, and every listed language is spoken by less than 20% of the population. Return the country element with its name attribute and its language subelements, but no other attributes or subelements. 
+
+# ok++
+for $country in doc("countries.xml")//country[
+  count(language) > 0 
+  and
+  count(language) = count(language[@percentage < 20]) ]
+return
+  <country name="{$country/data(@name)}">
+    {$country/language}
+  </country>
+
+q10. Find all situations where one country's most popular language is another country's least popular, and both countries list more than one language. (Hint: You may need to explicitly cast percentages as floating-point numbers with xs:float() to get the correct answer.) Return the name of the language and the two countries, each in the format:
+
+<LangPair language="lang-name">
+  <MostPopular>country-name</MostPopular>
+  <LeastPopular>country-name</LeastPopular>
+</LangPair>
+
+# TODO ???
+# seems to output correct pairs but in non-dictionary order
+let $countries := doc("countries.xml")//country[count(./language) > 1]
+for $leastco in $countries, $mostco in $countries
+let $leastlang := $leastco/language[
+  @percentage = min($leastco/language/data(@percentage))
+]
+let $mostlang := $mostco/language[
+  @percentage = max($mostco/language/data(@percentage))
+  and $mostco != $leastco
+]
+  return 
+if ($leastlang = $mostlang )
+then (
+<LangPair language="{ $leastlang }">
+  <MostPopular>{ $mostco/data(@name) }</MostPopular>
+  <LeastPopular>{ $leastco/data(@name) }</LeastPopular>
+</LangPair>)
+else ()
+
+
+q11. For each language spoken in one or more countries, create a "language" element with a "name" attribute and one "country" subelement for each country in which the language is spoken. The "country" subelements should have two attributes: the country "name", and "speakers" containing the number of speakers of that language (based on language percentage and the country's population). Order the result by language name, and enclose the entire list in a single "languages" element. For example, your result might look like:
+
+<languages>
+  ...
+  <language name="Arabic">
+    <country name="Iran" speakers="660942"/>
+    <country name="Saudi Arabia" speakers="19409058"/>
+    <country name="Yemen" speakers="13483178"/>
+  </language>
+  ...
+</languages>
+
+# ok ++ 
+# NOTE usage of xs:integer to convert from scientific notation to decimal
+<languages>
+{for $lang in distinct-values(doc("countries.xml")//language)
+order by $lang
+return 
+  <language name="{ $lang }">
+{
+for $country in doc("countries.xml")//country[./language = $lang]
+return
+  <country name="{ $country/data(@name) }"
+       speakers="{ $country/language[. = $lang]/(xs:integer(data(@percentage) * $country/data(@population) div 100)) }"/>
+}
+  </language>
+}
+</languages>

@@ -1,0 +1,10 @@
+Find all pizzas eaten by at least one female over the age of 20.
+
+# here \join is natural-join
+
+\project_{pizza} (
+	\select_{gender='female' and age>20} (
+	Person \join Eats
+	)
+)
+

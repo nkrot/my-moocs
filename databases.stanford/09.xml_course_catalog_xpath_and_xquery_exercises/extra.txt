@@ -1,0 +1,20 @@
+
+q1. Return the course number of the course that is cross-listed as "LING180". 
+
+# ok++
+doc("courses.xml")//Course[/contains(Description, "Cross-listed as LING180")]/data(@Number)
+
+
+q2. Return course numbers of courses taught by an instructor with first name "Daphne" or "Julie". 
+# ok++
+doc("courses.xml")//Course[Instructors//First_Name = "Daphne" or
+                           Instructors//First_Name = "Julie"]/data(@Number)
+
+
+q3. Return titles of courses that have both a lecturer and a professor as instructors. Return each title only once. 
+
+# ok++
+for $t in distinct-values(doc("courses.xml")//Course[count(Instructors/Professor) > 0
+                           and count(Instructors/Lecturer)>0 ]/Title)
+  return <Title> { $t } </Title>
+

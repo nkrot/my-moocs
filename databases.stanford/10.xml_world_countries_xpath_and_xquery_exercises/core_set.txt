@@ -1,0 +1,34 @@
+# uses ../countries.xml
+
+q1. Return the area of Mongolia. 
+
+# ok ++
+doc("countries.xml")//country[@name="Mongolia"]/data(@area)
+
+q2. Return the names of all cities that have the same name as the country in which they are located. 
+
+# bad
+doc("countries.xml")//country[@name = city/name]/city/name
+
+# ok++
+doc("countries.xml")//country/city[name = parent::*/data(@name)]/name
+# ok++
+doc("countries.xml")//country/city[name = parent::country/data(@name)]/name
+
+q3. Return the average population of Russian-speaking countries. 
+
+# ok++
+avg(doc("countries.xml")//country[language = "Russian"]/data(@population))
+
+q4. Return the names of all countries where over 50% of the population speaks German. (Hint: Depending on your solution, you may want to use ".", which refers to the "current element" within an XPath expression.) 
+
+# ok++
+doc("countries.xml")//country[language[@percentage > 50] = "German"]/data(@name)
+
+q5. Return the name of the country with the highest population. (Hint: You may need to explicitly cast population numbers as integers with xs:int() to get the correct answer.) 
+
+# ok++
+doc("countries.xml")//country[xs:int(data(@population)) = max(//country/data(@population))]/data(@name)
+
+# ok++
+doc("countries.xml")//country[number(data(@population)) = max(//country/data(@population))]/data(@name)

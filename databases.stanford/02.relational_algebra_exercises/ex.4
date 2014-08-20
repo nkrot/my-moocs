@@ -1,0 +1,21 @@
+Find all pizzerias that serve at least one pizza for less than $10 that both Amy and Fay eat. 
+
+#ok
+\project_{pizzeria} (
+	(
+		\project_{pizza} (\select_{name='Amy'} Eats)
+		\intersect
+		\project_{pizza} (\select_{name='Fay'} Eats)
+	)
+	\join
+	\select_{price<10} Serves
+)
+
+#ok
+\project_{pizzeria} (
+	\rename_{pizza} (
+		\project_{pizza1} (
+			\select_{name1='Amy' and name2='Fay' and pizza1=pizza2} (
+				\rename_{name1,pizza1,name2,pizza2} (Eats \cross Eats))))
+	\join (
+		\select_{price<10} Serves))
