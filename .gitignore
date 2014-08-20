@@ -1,2 +1,8 @@
 *~
 *.pdf
+tmp/
+
+# archives
+*.bz2
+*.zip
+core
