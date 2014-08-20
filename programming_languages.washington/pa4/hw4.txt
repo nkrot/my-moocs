@@ -1,0 +1,129 @@
+
+#lang racket
+
+(provide (all-defined-out)) ;; so we can put tests in a second file
+
+;; put your code below
+
+;; problem 1 - not really a problem
+(define (sequence low high stride)
+  (if (> low high)
+      null
+      (cons low (sequence (+ low stride) high stride))))
+
+;; problem 2 -- not really a problem
+(define (string-append-map xs suffix)
+  (map (lambda (str)
+         (string-append str suffix))
+       xs))
+
+;; same but using local binding
+;(define (string-append-map2 xs suffix)
+;  (letrec ([add-suffix (lambda (str)
+;         (string-append str suffix))])
+;    (map add-suffix xs)))
+
+;; problem 3
+(define (list-nth-mod xs n)
+  (cond [(< n 0) (error "list-nth-mod: negative number")]
+        [(null? xs) (error "list-nth-mod: empty list")]
+        [#t (car (list-tail xs (remainder n (length xs))))]))
+
+;; using unnecessary local binding
+;(define (list-nth-mod2 xs n)
+;  (cond [(< n 0) (error "list-nth-mod: negative number")]
+;        [(null? xs) (error "list-nth-mod: empty list")]
+;        [#t (let ([i (remainder n (length xs))])
+;              (car (list-tail xs i)))]))
+
+;; problem 4
+(define (stream-for-n-steps stream n)
+  (letrec ([gather (lambda (stream num accum)
+                     (letrec ([pr (stream)])
+                      (if (= num 0)
+                          accum
+                          (gather (cdr pr) (- num 1) (append accum (list (car pr)))))))])
+    (gather stream n null)))
+
+;; problem 5
+(define funny-number-stream
+  (letrec ([f (lambda (x)
+                (cons (if (= (remainder x 5) 0) (* -1 x) x)
+                      (lambda () (f (+ x 1)))))])
+    (lambda () (f 1))))
+
+; the same using local binding, which does not add to readability
+;(define funny-number-stream2
+;  (letrec ([f (lambda (x)
+;                (letrec ([num (if (= (remainder x 5) 0) (* -1 x) x)])
+;                  (cons num (lambda () (f (+ x 1))))))])
+;    (lambda () (f 1))))
+
+;; problem 6 -- this one was easy
+(define dan-then-dog
+  (letrec ([alternate (lambda (a b)
+                        (cons a (lambda () (alternate b a))))])
+    (lambda () (alternate "dan.jpg" "dog.jpg"))))
+
+;; problem 7
+(define (stream-add-zero stream)
+  (letrec ([add-zero 
+            (lambda (s)
+              (let ([pr (s)])
+                (cons (cons 0 (car pr)) (lambda () (add-zero (cdr pr))))))])
+    (lambda () (add-zero stream))))
+
+;; problem 8
+;; algorithm: cons car's of the given lists and rebuild the lists so that the list
+;; car's are removed from the head of the list and are added to the tail of the list
+;; (cons (1 "a") (cycling-zip '(2 3 1) '("b" "a"))
+;; (cons (2 "b") (cycling-zip '(3 1 2) '("a" "b"))
+;; (cons (3 "a") (cycling-zip '(1 2 3) '("b" "a"))
+;;
+(define (cycle-lists xs ys)
+  (letrec ([cycling-zip
+            (lambda (xs ys)
+              (letrec ([nxs (append (cdr xs) (list (car xs)))]  ; transform '(1 2 3) -> '(2 3 1)
+                       [nys (append (cdr ys) (list (car ys)))]) ; transform '(a b)   -> '(b a)
+                (cons (cons (car xs) (car ys))
+                      (lambda () (cycling-zip nxs nys)))))])
+  (lambda () (cycling-zip xs ys))))
+
+;; problem 9
+(define (vector-assoc v vec)
+  (letrec ([vlen (vector-length vec)]
+           [find-in-vector
+            (lambda (pos)
+              (if (= pos vlen)
+                  #f
+                  (let ([el (vector-ref vec pos)])
+                    (if (and (pair? el) (equal? v (car el)))
+                         el
+                         (find-in-vector (+ 1 pos))))))])
+    (find-in-vector 0)))
+
+;; this is ugly, cuz (vector-ref vec pos) is invoked too many times
+;(define (vector-assoc-ugly v vec)
+;  (letrec ([vlen (vector-length vec)]
+;           [find-in-vector
+;            (lambda (pos)
+;              (cond [(= pos vlen) #f]
+;                    [(and (pair? (vector-ref vec pos))
+;                          (equal? v (car (vector-ref vec pos))))
+;                     (vector-ref vec pos)]
+;                    [#t (find-in-vector (+ 1 pos))]))])
+;    (find-in-vector 0)))
+
+;; this one is still ugly, it calls (vector-ref vec pos) one too many times
+;(define (vector-assoc-less-ugly v vec)
+;  (letrec ([vlen (vector-length vec)]
+;           [find-in-vector
+;            (lambda (pos)
+;              (cond [(= pos vlen) #f]
+;                    [(letrec ([el (vector-ref vec pos)])
+;                       (and (pair? el) (equal? v (car el))))
+;                     (vector-ref vec pos)]
+;                    [#t (find-in-vector (+ 1 pos))]))])
+;    (find-in-vector 0)))
+
+;; problem 10 -- not implemented

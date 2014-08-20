@@ -1,0 +1,7 @@
+
+(defun rerun-sml-assignment ()
+  (interactive)
+  (run-sml "sml" "test_hw1.sml"))
+
+(global-set-key (kbd "C-p") 'rerun-sml-assignment)
+
