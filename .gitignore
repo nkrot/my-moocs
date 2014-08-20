@@ -5,4 +5,6 @@ tmp/
 # archives
 *.bz2
 *.zip
+*.gz
+
 core
