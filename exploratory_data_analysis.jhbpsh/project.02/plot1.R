@@ -1,0 +1,43 @@
+# Have total emissions from PM2.5 decreased in the United States from 1999 to 2008?
+# Using the *base* plotting system, make a plot showing the total PM2.5 emission from all sources
+# for each of the years 1999, 2002, 2005, and 2008.
+
+NEI = readRDS("summarySCC_PM25.rds")
+
+year_totals = aggregate(NEI$Emissions, by=list(year=NEI$year), FUN=sum)
+# rename the column name: x -> emissions
+colnames(year_totals)[which(names(year_totals) == "x")] = "emissions"
+
+png("plot1.png")
+
+#print(year_totals)
+#=>
+#year emissions
+#1 1999   7332967
+#2 2002   5635780
+#3 2005   5454703
+#4 2008   3464206
+
+plot(year_totals,
+     pch = 5,
+     xlab = "Year",
+     ylab = "Emissions",
+     main = "Total Amount of Emissions Per Year")
+
+# draw the line that shows the tendency
+# => decreasing
+model = lm(emissions ~year, year_totals)
+abline(model, lwd = 1, col=3)
+
+
+####
+# manually recompute total emissions per year
+# => the same figures as aggregate computed
+#for (y in unique(NEI$year)) {
+#  data = subset(NEI, year == y)$Emissions
+#  total = sum(data, na.rm = TRUE)
+#  print(y)
+#  print(total)
+#}
+
+dev.off()
