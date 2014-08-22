@@ -21,7 +21,7 @@ png("plot1.png")
 plot(year_totals,
      pch = 5,
      xlab = "Year",
-     ylab = "Emissions",
+     ylab = "Emissions, tons",
      main = "Total Amount of Emissions Per Year")
 
 # draw the line that shows the tendency
