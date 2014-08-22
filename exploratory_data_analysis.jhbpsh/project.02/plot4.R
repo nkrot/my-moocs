@@ -25,7 +25,7 @@ NEI_for_comb_coal = subset(NEI, NEI$SCC %in% scc_ids) # 2848 observations
 
 #str(NEI_for_comb_coal)
 
-with(NEI_for_comb_coal, plot(year, Emissions))
+#with(NEI_for_comb_coal, plot(year, Emissions))
 
 year_totals = aggregate(NEI_for_comb_coal$Emissions, 
                         by=list(year=NEI_for_comb_coal$year),
@@ -43,8 +43,8 @@ if (1) {
       ylab = "Total Emissions, tons",
       main = "Yearly Emissions from Coal Combustion-Related Sources")
   
-  ## draw the line that shows the tendency
-  ## => decreasing
+  # draw the line that shows the tendency
+  # => decreasing
   model = lm(emissions ~year, year_totals)
   abline(model, lwd = 1, col=3)
 }
