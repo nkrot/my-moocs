@@ -1,8 +1,7 @@
 #
-# Across the United States, how have emissions from coal combustion-related sources changed from 1999–2008?
+# Across the United States, how have emissions from coal combustion-related sources changed from 1999-2008?
 #
 # Here need to decide which column from SCC to used for identifying "coal combustion-related sources"
-
 
 SCC = readRDS("Source_Classification_Code.rds")
 #str(SCC)
@@ -34,31 +33,55 @@ year_totals = aggregate(NEI_for_comb_coal$Emissions,
 colnames(year_totals)[which(names(year_totals) == "x")] = "emissions"
 #year_totals
 
-png("plot4.png")
+title = "Yearly Emissions from Coal Combustion-Related Sources"
 
-if (1) {
-  plot(year_totals,
+### DOTS WITH REGRESSION LINE
+
+png("plot4-points.png")
+
+plot(year_totals,
       pch = 5,
       xlab = "Year",
       ylab = "Total Emissions, tons",
-      main = "Yearly Emissions from Coal Combustion-Related Sources")
+      main = title)
   
-  # draw the line that shows the tendency
-  # => decreasing
-  model = lm(emissions ~year, year_totals)
-  abline(model, lwd = 1, col=3)
-}
-
-if (0) {
-  library(ggplot2)
-
-  p = ggplot(year_totals, aes(x=year, y=emissions)) +
-    #geom_line() + # a line that simply connects the points
-    #geom_smooth(alpha=.2, size=1, method="lm") + # a straight line
-    geom_smooth(alpha=.2, size=1) +
-    ggtitle("Yearly Emissions from Coal Combustion-Related Sources")
-
-  print(p)
-}
+# draw the line that shows the tendency
+# => decreasing
+model = lm(emissions ~year, year_totals)
+abline(model, lwd = 1, col=3)
 
 dev.off()
+
+### SMOOTHED LINE
+
+library(ggplot2)
+
+png("plot4.png")
+
+p2 = ggplot(year_totals, aes(x=year, y=emissions)) +
+        #geom_line() + # a line that simply connects the points
+        #geom_smooth(alpha=.2, size=1, method="lm") + # a straight line
+        geom_smooth(alpha=.2, size=1) +
+      ggtitle(title)
+
+print(p2)
+
+dev.off()
+
+
+### COLORED BAR CHART
+
+png("plot4-bars.png")
+
+p3 = qplot(as.factor(year), data = year_totals,
+           weight = emissions, # uses it for Y instead of counts
+           #ylim = range(year_totals$emissions), TODO: with this, no bars are shown
+           xlab = "Year",
+           ylab = "Total emissions, tons",
+           main = title) +
+  geom_bar(colour="blue", fill="blue") 
+
+print(p3)
+
+dev.off()
+
