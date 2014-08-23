@@ -1,5 +1,6 @@
 data/
 peers_project1/
+*/submitted/
 *.rds
 .RData
 .Rhistory
