@@ -19,7 +19,10 @@ png("plot1.png")
 #4 2008   3464206
 
 plot(year_totals,
-     pch = 5,
+     #pch = 5,
+     type = "h", # vertical lines, a-la histogram
+     lwd = 7,
+     col = "blue",
      xlab = "Year",
      ylab = "Emissions, tons",
      main = "Total Amount of Emissions Per Year")
