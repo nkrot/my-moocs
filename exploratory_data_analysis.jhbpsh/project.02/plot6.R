@@ -3,10 +3,6 @@
 # from motor vehicle sources in Los Angeles County, California (fips == "06037"). 
 # Which city has seen greater changes over time in motor vehicle emissions?
 #
-# TODO: how to depict the idea of "greater changes"? -- do not bother!
-# TODO: is there a shorted way of building the table with summary data?
-# TODO: use a bar graph?
-# TODO: add regression lines instead?
 
 library(ggplot2)
 
@@ -27,12 +23,12 @@ year_totals_by_fips = function(req_fips, fips_location_name) {
 
   # Add a column filled with fips_location_name
   year_totals[, "Location"] = rep(fips_location_name, nrow(year_totals))
-  
 #  print(year_totals)
 
   return(year_totals)  
 }
 
+# join two tables (one below another)
 year_totals = rbind(year_totals_by_fips("24510", "Baltimore City"),
                     year_totals_by_fips("06037", "LA County"))
 
@@ -48,13 +44,33 @@ year_totals = rbind(year_totals_by_fips("24510", "Baltimore City"),
 #7 2005 4601.41493      LA County
 #8 2008 4101.32100      LA County
 
-png("plot6.png")
+### COLORED BAR CHART
 
-p = ggplot(year_totals, aes(x=year, y=emissions, colour=Location)) +
-  #geom_line() +
-  geom_smooth(alpha=.2, size=1) + # TODO: does it make sense?
-  ggtitle("Emissions by Year+Location")
+png("plot6-bars.png")
 
-print(p)
+p1 = qplot(as.factor(year), data = year_totals,
+            weight = emissions, # uses it for Y instead of counts
+            geom = "bar", #"path", "histogram"
+            fill = Location,
+            xlab = "Year",
+            ylab = "Emissions, tons",
+            main = "Emissions by Year+Location") 
+
+print(p1)
 
 dev.off()
+
+### CURVES
+
+png("plot6-lines.png")
+  
+p2 = ggplot(year_totals, aes(x=year, y=emissions, colour=Location)) +
+    #geom_line() +
+    geom_smooth(alpha=.2, size=1) + # does it make sense?
+    ggtitle("Emissions by Year+Location")
+
+print(p2)
+  
+dev.off()
+
+
