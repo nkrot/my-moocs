@@ -1,0 +1,3 @@
+data.table - is faster than data.frame
+doParallel package
+dplyr packages -- very recommended
